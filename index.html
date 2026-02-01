@@ -1,0 +1,93 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Translate Web App</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px; }
+        textarea { width: 100%; height: 100px; }
+        select, button { margin: 10px 0; padding: 10px; }
+        #result { margin-top: 20px; padding: 15px; background: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <h1>🌍 Переводчик</h1>
+    
+    <textarea id="text" placeholder="Введите текст..."></textarea>
+    
+    <div>
+        <label>Язык оригинала:</label>
+        <select id="source">
+            <option value="auto">Автоопределение</option>
+            <option value="en">Английский</option>
+            <option value="ru">Русский</option>
+            <option value="es">Испанский</option>
+            <option value="fr">Французский</option>
+        </select>
+    </div>
+    
+    <div>
+        <label>Целевой язык:</label>
+        <select id="target">
+            <option value="ru">Русский</option>
+            <option value="en">Английский</option>
+            <option value="es">Испанский</option>
+            <option value="fr">Французский</option>
+            <option value="de">Немецкий</option>
+        </select>
+    </div>
+    
+    <button onclick="translateText()">Перевести</button>
+    
+    <div id="result"></div>
+
+    <script>
+        // Внимание: для реального использования нужен API ключ!
+        // И серверная прокси (GitHub Pages не поддерживает CORS напрямую к Google API)
+        async function translateText() {
+            const text = document.getElementById('text').value;
+            const source = document.getElementById('source').value;
+            const target = document.getElementById('target').value;
+            
+            if (!text) {
+                alert('Введите текст!');
+                return;
+            }
+            
+            // Прокси через Cloudflare Workers или Netlify Functions
+            const proxyUrl = 'https://your-proxy.workers.dev';
+            
+            try {
+                const response = await fetch(`${proxyUrl}/translate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: text,
+                        source: source === 'auto' ? null : source,
+                        target: target,
+                        apiKey: 'YOUR_API_KEY' // Хранить на сервере!
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.translatedText) {
+                    document.getElementById('result').innerHTML = `
+                        <h3>Перевод:</h3>
+                        <p>${data.translatedText}</p>
+                        ${data.detectedLanguage ? 
+                            `<p><small>Определен язык: ${data.detectedLanguage}</small></p>` : ''}
+                    `;
+                } else {
+                    document.getElementById('result').innerHTML = 
+                        '<p style="color:red">Ошибка перевода</p>';
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('result').innerHTML = 
+                    '<p style="color:red">Ошибка соединения</p>';
+            }
+        }
+    </script>
+</body>
+</html>
