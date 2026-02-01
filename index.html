@@ -3,192 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌍 Переводчик | Google Translate API</title>
+    <title>🌍 Переводчик | GitHub Pages</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <div class="logo">
-                <i class="fas fa-language"></i>
-                <h1>Умный Переводчик</h1>
-            </div>
-            <p class="subtitle">Быстрый и точный перевод между 100+ языками</p>
+        <header>
+            <h1><i class="fas fa-language"></i> Переводчик онлайн</h1>
+            <p class="subtitle">Бесплатный переводчик на основе Google Translate</p>
         </header>
 
-        <div class="app">
-            <!-- Левая колонка - ввод -->
+        <div class="card">
             <div class="input-section">
                 <div class="language-selector">
-                    <div class="lang-box">
-                        <label for="source-lang"><i class="fas fa-globe-americas"></i> Язык оригинала</label>
-                        <div class="select-wrapper">
-                            <select id="source-lang">
-                                <option value="auto">Автоопределение</option>
-                                <!-- Языки будут добавлены через JS -->
-                            </select>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                    </div>
-                    
-                    <button class="swap-btn" id="swap-langs" title="Поменять языки местами">
+                    <select id="sourceLang">
+                        <option value="auto">Автоопределение</option>
+                    </select>
+                    <button id="swapBtn" title="Поменять языки">
                         <i class="fas fa-exchange-alt"></i>
                     </button>
-                    
-                    <div class="lang-box">
-                        <label for="target-lang"><i class="fas fa-flag"></i> Целевой язык</label>
-                        <div class="select-wrapper">
-                            <select id="target-lang">
-                                <!-- Языки будут добавлены через JS -->
-                            </select>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                    </div>
+                    <select id="targetLang">
+                        <option value="ru">Русский</option>
+                    </select>
                 </div>
-
-                <div class="text-input">
-                    <textarea 
-                        id="source-text" 
-                        placeholder="Введите текст для перевода..."
-                        maxlength="5000"
-                    ></textarea>
-                    <div class="text-controls">
-                        <div class="char-count">
-                            <span id="char-count">0</span>/5000 символов
-                        </div>
-                        <button class="clear-btn" id="clear-text">
-                            <i class="fas fa-trash"></i> Очистить
-                        </button>
-                    </div>
+                
+                <textarea id="inputText" placeholder="Введите текст для перевода..."></textarea>
+                <div class="char-counter">
+                    <span id="charCount">0</span>/5000 символов
                 </div>
-
-                <div class="controls">
-                    <button class="btn translate-btn" id="translate-btn">
-                        <i class="fas fa-language"></i> Перевести
-                    </button>
-                    <button class="btn secondary-btn" id="listen-source">
-                        <i class="fas fa-volume-up"></i> Прослушать
-                    </button>
-                    <button class="btn secondary-btn" id="copy-source">
-                        <i class="far fa-copy"></i> Копировать
-                    </button>
-                </div>
+                
+                <button id="translateBtn" class="btn primary">
+                    <i class="fas fa-language"></i> Перевести
+                </button>
             </div>
-
-            <!-- Правая колонка - результат -->
+            
             <div class="output-section">
                 <div class="result-header">
                     <h3><i class="fas fa-exchange-alt"></i> Перевод</h3>
-                    <div class="detected-lang" id="detected-lang">
-                        <!-- Здесь появится определенный язык -->
-                    </div>
+                    <span id="detectedLang" class="lang-badge"></span>
                 </div>
                 
-                <div class="text-output" id="translation-result">
-                    <p class="placeholder">Перевод появится здесь...</p>
+                <div id="outputText" class="output-text">
+                    <p class="placeholder">Здесь появится перевод...</p>
                 </div>
-
+                
                 <div class="result-controls">
-                    <button class="btn secondary-btn" id="listen-translation">
+                    <button id="speakOutput" class="btn secondary">
                         <i class="fas fa-volume-up"></i> Прослушать
                     </button>
-                    <button class="btn secondary-btn" id="copy-translation">
+                    <button id="copyOutput" class="btn secondary">
                         <i class="far fa-copy"></i> Копировать
                     </button>
-                    <button class="btn secondary-btn" id="share-translation">
-                        <i class="fas fa-share-alt"></i> Поделиться
-                    </button>
-                </div>
-
-                <div class="translation-info" id="translation-info">
-                    <!-- Дополнительная информация -->
                 </div>
             </div>
         </div>
-
-        <!-- Дополнительные функции -->
-        <div class="features">
-            <div class="feature-card">
-                <i class="fas fa-bolt"></i>
-                <h4>Мгновенный перевод</h4>
-                <p>Перевод в реальном времени</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-language"></i>
-                <h4>100+ языков</h4>
-                <p>Поддержка большинства языков мира</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-shield-alt"></i>
-                <h4>Безопасно</h4>
-                <p>Ваши данные защищены</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-mobile-alt"></i>
-                <h4>Адаптивный</h4>
-                <p>Работает на всех устройствах</p>
-            </div>
+        
+        <div class="info-box">
+            <h3><i class="fas fa-info-circle"></i> Как это работает?</h3>
+            <p>Этот переводчик использует <strong>Google Translate API</strong> через публичный прокси.</p>
+            <p><strong>Важно:</strong> Есть лимит 1000 переводов в день на один IP.</p>
         </div>
-
-        <!-- Инструкция -->
-        <div class="instructions">
-            <h3><i class="fas fa-info-circle"></i> Как использовать</h3>
-            <ol>
-                <li>Введите текст в левое поле</li>
-                <li>Выберите языки перевода</li>
-                <li>Нажмите кнопку "Перевести"</li>
-                <li>Используйте дополнительные функции: прослушивание, копирование</li>
-            </ol>
-            <p class="note">
-                <i class="fas fa-exclamation-triangle"></i>
-                <strong>Важно:</strong> Для работы требуется API ключ Google Cloud. 
-                <a href="#setup-instructions">Инструкция по настройке</a>
-            </p>
-        </div>
-
-        <!-- Настройка API -->
-        <div class="setup" id="setup-instructions">
-            <h3><i class="fas fa-cog"></i> Настройка API</h3>
-            <div class="setup-steps">
-                <div class="step">
-                    <span class="step-number">1</span>
-                    <h4>Получите API ключ</h4>
-                    <p>Перейдите на <a href="https://console.cloud.google.com" target="_blank">Google Cloud Console</a></p>
-                    <p>Создайте проект → Включите Google Translate API</p>
-                </div>
-                <div class="step">
-                    <span class="step-number">2</span>
-                    <h4>Настройте прокси</h4>
-                    <p>Создайте Cloudflare Worker с кодом из <code>proxy-worker.js</code></p>
-                    <p>Вставьте ваш API ключ в переменную <code>API_KEY</code></p>
-                </div>
-                <div class="step">
-                    <span class="step-number">3</span>
-                    <h4>Обновите настройки</h4>
-                    <p>В файле <code>script.js</code> замените <code>PROXY_URL</code></p>
-                    <p>На URL вашего Cloudflare Worker</p>
-                </div>
-            </div>
-        </div>
-
-        <footer class="footer">
-            <p>© 2024 Переводчик | Использует Google Translate API | 
-                <a href="https://github.com/ваш-логин/google-translator" target="_blank">
-                    <i class="fab fa-github"></i> Исходный код
+        
+        <footer>
+            <p>© 2024 Переводчик | 
+                <a href="https://github.com/ваш-логин/ваш-репозиторий" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
                 </a>
-            </p>
-            <p class="disclaimer">
-                Этот проект является демонстрационным. Для коммерческого использования 
-                необходимо соблюдать условия использования Google Cloud Platform.
             </p>
         </footer>
     </div>
-
-    <!-- Уведомления -->
+    
     <div id="notification" class="notification"></div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
