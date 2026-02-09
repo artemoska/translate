@@ -303,7 +303,6 @@ button:hover {
             <div class="loader"></div>
         </div>
         
-        <!-- Новая секция сообществ -->
         <div class="community-section">
             <h2 class="community-title">Хочешь заниматься с нами? Тогда присоединяйся в наши группы с опытными учителями!</h2>
             <p class="community-subtitle">★ Международные сообщества<br>Присоединяйтесь к RubeTON на вашем языке</p>
@@ -456,13 +455,11 @@ button:hover {
         alert("Перевод скопирован!");
     }
 
-    // Функция для открытия Telegram (пример реализации)
     function openTelegram(username) {
         const telegramLink = `https://t.me/${username}`;
         window.open(telegramLink, '_blank');
     }
 
-    // Добавляем обработчики кликов для всех карточек
     document.querySelectorAll('.community-card').forEach(card => {
         card.addEventListener('click', function() {
             const username = this.querySelector('.community-link').textContent.replace('@', '');
